@@ -28,6 +28,18 @@ public class restEtudiant {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAll(){
+        List<Etudiant> l = new ArrayList<Etudiant>();
+        l=eb.getAllEtudiants();
+        if (l.isEmpty()){
+            return Response.status(404).build();
+        }else{
+            return Response.status(200).entity(l).build();
+        }
+    }
+
+    @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEtudiant(@PathParam("id") String id ){
@@ -60,13 +72,14 @@ public class restEtudiant {
     @GET
     @Path("/option/{codeOption}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEtudiantsByOption(@PathParam("codeOption") int codeOption) {
+    public Response getEtudiantsByOption(
+            @PathParam("codeOption") int codeOption) {
 
         Option option = new Option();
-
         option.setCodeOption(codeOption);
 
-        List<Etudiant> etudiants = eb.getEtudiantsByOption(option);
+        List<Etudiant> etudiants =
+                eb.getEtudiantsByOption(option);
 
         return Response.ok(etudiants).build();
     }
